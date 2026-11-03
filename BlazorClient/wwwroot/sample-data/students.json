@@ -1,0 +1,26 @@
+[
+  {
+    "StudentId": 32,
+    "FirstName": "Liz",
+    "LastName": "Ji",
+    "School": "Nursing",
+    "Gender": "Female",
+    "DateOfBirth": "1998-08-21"
+  },
+  {
+    "StudentId": 33,
+    "FirstName": "Ric",
+    "LastName": "Kuo",
+    "School": "Business",
+    "Gender": "Male",
+    "DateOfBirth": "1996-12-10"
+  },
+  {
+    "StudentId": 34,
+    "FirstName": "Pam",
+    "LastName": "Mak",
+    "School": "Computing",
+    "Gender": "Female",
+    "DateOfBirth": "1999-02-14"
+  }
+]

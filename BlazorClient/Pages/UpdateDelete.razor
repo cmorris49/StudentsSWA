@@ -1,0 +1,75 @@
+﻿@page "/updel/{id}/{mode}"
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
+
+<p>Student with ID == @Id</p>
+
+@if (student != null && Mode == "edit") // Update
+{
+<h1>UPDATE</h1>
+<EditForm Model="@student" OnValidSubmit="@HandleUpdate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+        <InputText placeholder="First Name" id="firstName" @bind-Value="@student!.FirstName" />
+        <br />
+        <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
+        <br />
+        <InputText placeholder="School" id="school" @bind-Value="@student.School" />
+        <br />
+        <InputText placeholder="Gender" id="gender" @bind-Value="@student.Gender" />
+        <br />
+        <InputDate placeholder="Date of Birth" id="dateOfBirth" @bind-Value="@student.DateOfBirth" />
+        <br />
+        <button type="submit" class="btn btn-success">Submit</button>
+
+    @code {
+        private async void HandleUpdate()
+        {
+            string endpoint = $"students/{student!.StudentId}";
+            await httpClient.PutAsJsonAsync(endpoint, student);
+            NavManager.NavigateTo("/");
+        }
+    }
+</EditForm>
+}
+
+@if (student != null && Mode == "del") // Delete form
+{
+<h1>Delete</h1>
+<EditForm Model="@student" OnValidSubmit="@HandleDelete">
+    <p>Are you sure you want to delete this student?</p>
+
+    <p>ID: @student.StudentId</p>
+    <p>First Name: @student.FirstName</p>
+    <p>Last Name: @student.LastName</p>
+    <p>School: @student.School</p>
+    <p>School: @student.Gender</p>
+    <p>School: @student.DateOfBirth</p>
+
+
+    <button type="submit" value="Delete" class="btn btn-danger">Submit</button>
+
+    @code {
+        protected async void HandleDelete()
+        {
+            await httpClient.DeleteAsync($"students/{student!.StudentId}");
+                NavManager.NavigateTo("/students");
+        }
+    }
+</EditForm>
+}
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+    [Parameter]
+    public string? Mode { get; set; }
+    
+    Student? student;
+
+    protected override async Task OnInitializedAsync()
+    {
+        student = await httpClient.GetFromJsonAsync<Student>($"students/{Id}");
+    }
+}
